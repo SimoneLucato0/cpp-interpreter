@@ -1,5 +1,7 @@
-#include "scanner.h"
 #include <iostream>
+
+#include "scanner.h"
+#include "helper.h"
 
 Scanner::Scanner(const std::string &src) : source(src) {}
 
@@ -9,10 +11,8 @@ std::vector<Token> Scanner::scanTokens()
     {
         start = current;
         scanToken();
-        current++;
     }
-    tokens.push_back({TokenType::EOF_TOKEN, "", line});
-    std::cout << "EOF  null" << std::endl;
+    addToken(TokenType::EOF_TOKEN);
 
     if (hasLexicalErrors)
         std::exit(65);
@@ -22,102 +22,52 @@ std::vector<Token> Scanner::scanTokens()
 
 void Scanner::scanToken()
 {
-    char c = source[current];
+    char c = source[current++];
     switch (c)
     {
     case ' ':
         break;
     case '(':
-        std::cout << "LEFT_PAREN ( null" << std::endl;
-        tokens.push_back({TokenType::LEFT_PAREN, "(", line});
+        addToken(TokenType::LEFT_PAREN);
         break;
     case ')':
-        std::cout << "RIGHT_PAREN ) null" << std::endl;
-        tokens.push_back({TokenType::RIGHT_PAREN, ")", line});
+        addToken(TokenType::RIGHT_PAREN);
         break;
     case '{':
-        std::cout << "LEFT_BRACE { null" << std::endl;
-        tokens.push_back({TokenType::LEFT_BRACE, "{", line});
+        addToken(TokenType::LEFT_BRACE);
         break;
     case '}':
-        std::cout << "RIGHT_BRACE } null" << std::endl;
-        tokens.push_back({TokenType::RIGHT_BRACE, "}", line});
+        addToken(TokenType::RIGHT_BRACE);
         break;
     case ',':
-        std::cout << "COMMA , null" << std::endl;
-        tokens.push_back({TokenType::COMMA, ",", line});
+        addToken(TokenType::COMMA);
         break;
     case '.':
-        std::cout << "DOT . null" << std::endl;
-        tokens.push_back({TokenType::DOT, ".", line});
+        addToken(TokenType::DOT);
         break;
     case ';':
-        std::cout << "SEMICOLON ; null" << std::endl;
-        tokens.push_back({TokenType::SEMICOLON, ";", line});
+        addToken(TokenType::SEMICOLON);
         break;
     case '+':
-        std::cout << "PLUS + null" << std::endl;
-        tokens.push_back({TokenType::PLUS, "+", line});
+        addToken(TokenType::PLUS);
         break;
     case '-':
-        std::cout << "MINUS - null" << std::endl;
-        tokens.push_back({TokenType::MINUS, "-", line});
+        addToken(TokenType::MINUS);
         break;
     case '*':
-        std::cout << "STAR * null" << std::endl;
-        tokens.push_back({TokenType::STAR, "*", line});
+        addToken(TokenType::STAR);
         break;
     case '=':
-        if (current + 1 < source.size() && source[current + 1] == '=')
-        {
-            std::cout << "EQUAL_EQUAL == null" << std::endl;
-            tokens.push_back({TokenType::EQUAL_EQUAL, "==", line});
-            current++;
-        }
-        else
-        {
-            std::cout << "EQUAL = null" << std::endl;
-            tokens.push_back({TokenType::EQUAL, "=", line});
-        }
+        addToken(matchCharacter('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL);
         break;
     case '!':
-        if (current + 1 < source.size() && source[current + 1] == '=')
-        {
-            std::cout << "BANG_EQUAL != null" << std::endl;
-            tokens.push_back({TokenType::BANG_EQUAL, "!=", line});
-            current++;
-        }
-        else
-        {
-            std::cout << "BANG ! null" << std::endl;
-            tokens.push_back({TokenType::BANG, "!", line});
-        }
+        addToken(matchCharacter('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
         break;
     case '<':
-        if (current + 1 < source.size() && source[current + 1] == '=')
-        {
-            std::cout << "LESS_EQUAL <= null" << std::endl;
-            tokens.push_back({TokenType::LESS_EQUAL, "<=", line});
-            current++;
-        }
-        else
-        {
-            std::cout << "LESS < null" << std::endl;
-            tokens.push_back({TokenType::LESS, "<", line});
-        }
+        addToken(matchCharacter('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
         break;
     case '>':
-        if (current + 1 < source.size() && source[current + 1] == '=')
-        {
-            std::cout << "GREATER_EQUAL >= null" << std::endl;
-            tokens.push_back({TokenType::GREATER_EQUAL, ">=", line});
-            current++;
-        }
-        else
-        {
-            std::cout << "GREATER > null" << std::endl;
-            tokens.push_back({TokenType::GREATER, ">", line});
-        }
+        addToken(matchCharacter('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
         break;
 
     default:
@@ -130,4 +80,27 @@ void Scanner::scanToken()
 bool Scanner::isAtEnd() const
 {
     return current >= source.size();
+}
+
+void Scanner::addToken(TokenType token)
+{
+    std::cout << TokenTypeToString(token) << " " << TokenTypeToLexeme(token) << " null" << std::endl;
+    tokens.push_back({token, TokenTypeToLexeme(token), line});
+}
+
+void Scanner::addToken(TokenType token, std::string value)
+{
+    std::cout << TokenTypeToString(token) << " " << TokenTypeToLexeme(token) << " " << value << std::endl;
+    tokens.push_back({token, TokenTypeToLexeme(token), line});
+}
+
+bool Scanner::matchCharacter(char expected)
+{
+    if (isAtEnd())
+        return false;
+    if (source.at(current) != expected)
+        return false;
+
+    current++;
+    return true;
 }
