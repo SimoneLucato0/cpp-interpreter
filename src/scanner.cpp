@@ -21,32 +21,23 @@ void Scanner::scanToken()
     char c = source[current++];
     switch (c)
     {
-    case '+':
-        std::cout << "PLUS +" << std::endl;
-        // tokens.push_back({TokenType::PLUS, "+", line});
+    case '(':
+        std::cout << "LEFT_PAREN ( null" << std::endl;
+        tokens.push_back({TokenType::LEFT_PAREN, "(", line});
         break;
-    case '-':
-        std::cout << "MINUS -" << std::endl;
-        // tokens.push_back({TokenType::MINUS, "-", line});
+    case ')':
+        std::cout << "RIGHT_PAREN ) null" << std::endl;
+        tokens.push_back({TokenType::RIGHT_PAREN, ")", line});
         break;
-    case ' ':
+    case '{':
+        std::cout << "LEFT_BRACE { null" << std::endl;
+        tokens.push_back({TokenType::LEFT_BRACE, "{", line});
         break;
-    // ... handle more tokens
+    case '}':
+        std::cout << "RIGHT_BRACE } null" << std::endl;
+        tokens.push_back({TokenType::RIGHT_BRACE, "}", line});
+        break;
     default:
-        if (isdigit(c))
-        {
-            // Scan a number (simplified)
-            size_t numStart = current - 1;
-            while (current < source.size() && isdigit(source[current]))
-                ++current;
-            std::cout << "NUMBER " << source.substr(numStart, current - numStart) << std::endl;
-            // tokens.push_back({TokenType::NUMBER, source.substr(numStart, current - numStart), line});
-        }
-        else
-        {
-            std::cerr << "Unrecognized token: " << c << std::endl;
-        }
-        // ... handle identifiers, etc.
         break;
     }
 }

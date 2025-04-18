@@ -6,6 +6,7 @@ all_passed=true
 failed_tests=()
 
 for f in tests/*.expected; do
+    sed -i 's/\r$//' $f
     if [ -f "$f" ] && [ -n "$(tail -c1 "$f")" ]; then
         echo "WARNING: $f does not end with a newline"
     fi

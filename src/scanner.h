@@ -5,10 +5,10 @@
 enum class TokenType
 {
     // Add your token types here
-    IDENTIFIER,
-    NUMBER,
-    PLUS,
-    MINUS,
+    LEFT_PAREN,
+    RIGHT_PAREN,
+    LEFT_BRACE,
+    RIGHT_BRACE,
     EOF_TOKEN
 };
 
