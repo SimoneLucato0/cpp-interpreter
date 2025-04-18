@@ -9,6 +9,12 @@ enum class TokenType
     RIGHT_PAREN,
     LEFT_BRACE,
     RIGHT_BRACE,
+    COMMA,
+    DOT,
+    SEMICOLON,
+    PLUS,
+    MINUS,
+    STAR,
     EOF_TOKEN
 };
 

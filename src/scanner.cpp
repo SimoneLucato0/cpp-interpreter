@@ -37,6 +37,30 @@ void Scanner::scanToken()
         std::cout << "RIGHT_BRACE } null" << std::endl;
         tokens.push_back({TokenType::RIGHT_BRACE, "}", line});
         break;
+    case ',':
+        std::cout << "COMMA , null" << std::endl;
+        tokens.push_back({TokenType::COMMA, ",", line});
+        break;
+    case '.':
+        std::cout << "DOT . null" << std::endl;
+        tokens.push_back({TokenType::DOT, ".", line});
+        break;
+    case ';':
+        std::cout << "SEMICOLON ; null" << std::endl;
+        tokens.push_back({TokenType::SEMICOLON, ";", line});
+        break;
+    case '+':
+        std::cout << "PLUS + null" << std::endl;
+        tokens.push_back({TokenType::PLUS, "+", line});
+        break;
+    case '-':
+        std::cout << "MINUS - null" << std::endl;
+        tokens.push_back({TokenType::MINUS, "-", line});
+        break;
+    case '*':
+        std::cout << "STAR * null" << std::endl;
+        tokens.push_back({TokenType::STAR, "*", line});
+        break;
     default:
         break;
     }
