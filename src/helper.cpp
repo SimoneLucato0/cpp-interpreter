@@ -48,6 +48,8 @@ std::string TokenTypeToString(TokenType t)
 
     case TokenType::STRING:
         return "STRING";
+    case TokenType::NUMBER:
+        return "NUMBER";
 
     case TokenType::EOF_TOKEN:
         return "EOF";
@@ -107,4 +109,9 @@ std::string TokenTypeToLexeme(TokenType t)
     default:
         throw std::invalid_argument("TokenTypeToLexeme:Unimplemented item");
     }
+}
+
+bool isDigit(char c)
+{
+    return c >= '0' && c <= '9';
 }

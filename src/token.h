@@ -29,6 +29,7 @@ enum class TokenType
 
     // Literals
     STRING,
+    NUMBER,
 
     EOF_TOKEN
 };

@@ -109,6 +109,32 @@ void Scanner::scanToken()
     }
 
     default:
+        if (isDigit(c))
+        {
+            while (isDigit(peek()))
+                advance();
+
+            if (peek() == '.' && isDigit(peekNext()))
+            {
+                advance();
+
+                while (isDigit(peek()))
+                    advance();
+            }
+
+            std::string lexeme = source.substr(start, current - start);
+            std::string literal = lexeme;
+
+            if (literal.find('.') == std::string::npos)
+                literal.append(".0");
+            while (literal.back() == '0' && literal[literal.size() - 2] == '0')
+                literal.pop_back();
+
+            addToken(TokenType::NUMBER, lexeme, literal);
+
+            break;
+        }
+
         std::cerr << "[line " << line << "] Error: Unexpected character: " << c << std::endl;
         hasLexicalErrors = true;
         break;
@@ -125,6 +151,12 @@ char Scanner::peek() const
     if (isAtEnd())
         return '\0';
     return source.at(current);
+}
+char Scanner::peekNext() const
+{
+    if (current + 1 >= source.size())
+        return '\0';
+    return source.at(current + 1);
 }
 
 bool Scanner::isAtEnd() const

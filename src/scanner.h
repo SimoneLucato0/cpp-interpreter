@@ -19,6 +19,7 @@ private:
 
     char advance();
     char peek() const;
+    char peekNext() const;
     bool isAtEnd() const;
 
     void scanToken();
