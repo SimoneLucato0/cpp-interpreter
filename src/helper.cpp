@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include "helper.h"
 
-std::string TokenTypeToString(TokenType t) throw()
+std::string TokenTypeToString(TokenType t)
 {
     switch (t)
     {
@@ -45,15 +45,19 @@ std::string TokenTypeToString(TokenType t) throw()
         return "GREATER";
     case TokenType::GREATER_EQUAL:
         return "GREATER_EQUAL";
+
+    case TokenType::STRING:
+        return "STRING";
+
     case TokenType::EOF_TOKEN:
         return "EOF";
 
     default:
-        throw std::invalid_argument("Unimplemented item");
+        throw std::invalid_argument("TokenTypeToString: Unimplemented item");
     }
 }
 
-std::string TokenTypeToLexeme(TokenType t) throw()
+std::string TokenTypeToLexeme(TokenType t)
 {
     switch (t)
     {
@@ -96,10 +100,11 @@ std::string TokenTypeToLexeme(TokenType t) throw()
         return ">";
     case TokenType::GREATER_EQUAL:
         return ">=";
+
     case TokenType::EOF_TOKEN:
         return "";
 
     default:
-        throw std::invalid_argument("Unimplemented item");
+        throw std::invalid_argument("TokenTypeToLexeme:Unimplemented item");
     }
 }

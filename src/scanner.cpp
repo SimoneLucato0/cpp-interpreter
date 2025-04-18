@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 
 #include "scanner.h"
 #include "helper.h"
@@ -82,6 +83,26 @@ void Scanner::scanToken()
     case '>':
         addToken(matchCharacter('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
         break;
+    case '"':
+    {
+        std::string value = "";
+        while (current < source.size() && source[current] != '"')
+        {
+            value.append(std::string(1, source[current]));
+            current++;
+        }
+        if (current == source.size())
+        {
+            std::cerr << "[line " << line << "] Error: Unterminated string." << std::endl;
+            hasLexicalErrors = true;
+        }
+        else
+        {
+            addToken(TokenType::STRING, value);
+            current++;
+        }
+        break;
+    }
 
     default:
         std::cerr << "[line " << line << "] Error: Unexpected character: " << c << std::endl;
@@ -97,14 +118,20 @@ bool Scanner::isAtEnd() const
 
 void Scanner::addToken(TokenType token)
 {
+    if (token == TokenType::STRING)
+        throw std::runtime_error("addToken(TokenType token, std::string value) MUST be called if token is a string.");
+
     std::cout << TokenTypeToString(token) << " " << TokenTypeToLexeme(token) << " null" << std::endl;
     tokens.push_back({token, TokenTypeToLexeme(token), line});
 }
 
 void Scanner::addToken(TokenType token, std::string value)
 {
-    std::cout << TokenTypeToString(token) << " " << TokenTypeToLexeme(token) << " " << value << std::endl;
-    tokens.push_back({token, TokenTypeToLexeme(token), line});
+    if (token != TokenType::STRING)
+        throw std::runtime_error("addToken(TokenType token) MUST be called if token is NOT a string.");
+
+    std::cout << TokenTypeToString(token) << " \"" << value << "\" " << value << std::endl;
+    tokens.push_back({token, value, line});
 }
 
 bool Scanner::matchCharacter(char expected)

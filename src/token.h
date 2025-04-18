@@ -27,6 +27,9 @@ enum class TokenType
     GREATER,
     GREATER_EQUAL,
 
+    // Literals
+    STRING,
+
     EOF_TOKEN
 };
 
