@@ -32,12 +32,12 @@ public:
     std::vector<Token> scanTokens();
 
 private:
-    // Add your private methods and fields here
     const std::string &source;
     size_t start = 0, current = 0;
     int line = 1;
     std::vector<Token> tokens;
+    bool hasLexicalErrors = false;
+
     void scanToken();
     bool isAtEnd() const;
-    // ... more helpers as needed
 };

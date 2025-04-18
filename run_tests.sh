@@ -19,8 +19,15 @@ for testfile in tests/*.txt; do
     out_expected="${base}.out.expected"
     err_expected="${base}.err.expected"
 
-    # Run the program, capturing stdout and stderr
+    # Check if expected stderr is non-empty
+    expect_exit_65=false
+    if [ -s "$err_expected" ]; then
+        expect_exit_65=true
+    fi
+
+    # Run the program, capturing stdout, stderr, and exit code
     $PROGRAM tokenize "$testfile" > "$out_actual" 2> "$err_actual"
+    prog_exit_code=$?
 
     # Compare outputs and capture diffs
     diff -u "$out_expected" "$out_actual" > "${base}.out.diff"
@@ -28,9 +35,24 @@ for testfile in tests/*.txt; do
     diff -u "$err_expected" "$err_actual" > "${base}.err.diff"
     err_ok=$?
 
-    if [ $out_ok -eq 0 ] && [ $err_ok -eq 0 ]; then
+    # Check exit code if expected stderr is non-empty
+    exit_ok=1
+    if $expect_exit_65; then
+        if [ $prog_exit_code -eq 65 ]; then
+            exit_ok=0
+        else
+            exit_ok=1
+        fi
+    else
+        if [ $prog_exit_code -eq 0 ]; then
+            exit_ok=0
+        else
+            exit_ok=1
+        fi
+    fi
+
+    if [ $out_ok -eq 0 ] && [ $err_ok -eq 0 ] && [ $exit_ok -eq 0 ]; then
         echo "[PASS] $testfile"
-        # Clean up diff files since there's no difference
         rm -f "${base}.out.diff" "${base}.err.diff"
     else
         echo "[FAIL] $testfile"
@@ -43,8 +65,12 @@ for testfile in tests/*.txt; do
             echo "  [stderr differs]:"
             cat "${base}.err.diff"
         fi
+        if [ $exit_ok -ne 0 ]; then
+            echo "  [exit code differs]: Expected $([ $expect_exit_65 = true ] && echo 65 || echo 0), got $prog_exit_code"
+        fi
     fi
 done
+
 
 if [ ${#failed_tests[@]} -eq 0 ]; then
     echo "All tests passed."

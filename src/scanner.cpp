@@ -12,6 +12,10 @@ std::vector<Token> Scanner::scanTokens()
     }
     tokens.push_back({TokenType::EOF_TOKEN, "", line});
     std::cout << "EOF  null" << std::endl;
+
+    if (hasLexicalErrors)
+        std::exit(65);
+
     return tokens;
 }
 
@@ -62,6 +66,8 @@ void Scanner::scanToken()
         tokens.push_back({TokenType::STAR, "*", line});
         break;
     default:
+        std::cerr << "[line " << line << "] Error: Unexpected character: " << c << std::endl;
+        hasLexicalErrors = true;
         break;
     }
 }
