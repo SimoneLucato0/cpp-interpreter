@@ -15,6 +15,10 @@ enum class TokenType
     PLUS,
     MINUS,
     STAR,
+    EQUAL,
+    EQUAL_EQUAL,
+    BANG,
+    BANG_EQUAL,
     EOF_TOKEN
 };
 
