@@ -11,6 +11,7 @@ std::vector<Token> Scanner::scanTokens()
         scanToken();
     }
     tokens.push_back({TokenType::EOF_TOKEN, "", line});
+    std::cout << "EOF  null" << std::endl;
     return tokens;
 }
 
