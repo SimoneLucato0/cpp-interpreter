@@ -50,6 +50,8 @@ std::string TokenTypeToString(TokenType t)
         return "STRING";
     case TokenType::NUMBER:
         return "NUMBER";
+    case TokenType::IDENTIFIER:
+        return "IDENTIFIER";
 
     case TokenType::EOF_TOKEN:
         return "EOF";
@@ -114,4 +116,9 @@ std::string TokenTypeToLexeme(TokenType t)
 bool isDigit(char c)
 {
     return c >= '0' && c <= '9';
+}
+
+bool isCharacter(char c)
+{
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
 }

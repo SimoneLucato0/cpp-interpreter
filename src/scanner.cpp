@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdexcept>
+#include <cctype>
 
 #include "scanner.h"
 #include "helper.h"
@@ -135,6 +136,17 @@ void Scanner::scanToken()
             break;
         }
 
+        if (isCharacter(c))
+        {
+            while (!isAtEnd() && (isCharacter(peek()) || isDigit(peek())))
+                advance();
+
+            std::string value = source.substr(start, current - start);
+            addToken(TokenType::IDENTIFIER, value, "null");
+
+            break;
+        }
+
         std::cerr << "[line " << line << "] Error: Unexpected character: " << c << std::endl;
         hasLexicalErrors = true;
         break;
@@ -152,6 +164,7 @@ char Scanner::peek() const
         return '\0';
     return source.at(current);
 }
+
 char Scanner::peekNext() const
 {
     if (current + 1 >= source.size())

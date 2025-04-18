@@ -6,3 +6,4 @@
 std::string TokenTypeToString(TokenType t);
 std::string TokenTypeToLexeme(TokenType t);
 bool isDigit(char c);
+bool isCharacter(char c);

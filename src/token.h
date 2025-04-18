@@ -30,6 +30,7 @@ enum class TokenType
     // Literals
     STRING,
     NUMBER,
+    IDENTIFIER,
 
     EOF_TOKEN
 };
