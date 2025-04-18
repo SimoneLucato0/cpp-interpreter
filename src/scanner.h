@@ -19,7 +19,7 @@ private:
 
     void scanToken();
     void addToken(TokenType token);
-    void addToken(TokenType token, std::string value);
+    void addToken(TokenType token, std::string lexeme, std::string literal);
     bool matchCharacter(char c);
     bool isAtEnd() const;
 };

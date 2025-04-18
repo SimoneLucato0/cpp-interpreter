@@ -85,10 +85,10 @@ void Scanner::scanToken()
         break;
     case '"':
     {
-        std::string value = "";
+        std::string lexeme = std::string(1, c);
         while (current < source.size() && source[current] != '"')
         {
-            value.append(std::string(1, source[current]));
+            lexeme.append(std::string(1, source[current]));
             current++;
         }
         if (current == source.size())
@@ -98,8 +98,10 @@ void Scanner::scanToken()
         }
         else
         {
-            addToken(TokenType::STRING, value);
+            lexeme.append(std::string(1, source[current]));
             current++;
+            std::string literal = lexeme.substr(1, lexeme.size() - 2);
+            addToken(TokenType::STRING, lexeme, literal);
         }
         break;
     }
@@ -118,20 +120,13 @@ bool Scanner::isAtEnd() const
 
 void Scanner::addToken(TokenType token)
 {
-    if (token == TokenType::STRING)
-        throw std::runtime_error("addToken(TokenType token, std::string value) MUST be called if token is a string.");
-
-    std::cout << TokenTypeToString(token) << " " << TokenTypeToLexeme(token) << " null" << std::endl;
-    tokens.push_back({token, TokenTypeToLexeme(token), line});
+    addToken(token, TokenTypeToLexeme(token), "null");
 }
 
-void Scanner::addToken(TokenType token, std::string value)
+void Scanner::addToken(TokenType token, std::string lexeme, std::string literal)
 {
-    if (token != TokenType::STRING)
-        throw std::runtime_error("addToken(TokenType token) MUST be called if token is NOT a string.");
-
-    std::cout << TokenTypeToString(token) << " \"" << value << "\" " << value << std::endl;
-    tokens.push_back({token, value, line});
+    std::cout << TokenTypeToString(token) << " " << lexeme << " " << literal << std::endl;
+    tokens.push_back({token, lexeme, literal, line});
 }
 
 bool Scanner::matchCharacter(char expected)
