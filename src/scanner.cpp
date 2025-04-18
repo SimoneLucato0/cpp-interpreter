@@ -23,7 +23,7 @@ std::vector<Token> Scanner::scanTokens()
 
 void Scanner::scanToken()
 {
-    char c = source[current++];
+    char c = advance();
     switch (c)
     {
     case ' ':
@@ -66,8 +66,8 @@ void Scanner::scanToken()
         break;
     case '/':
         if (matchCharacter('/'))
-            while (!isAtEnd() && source[current] != '\n')
-                current++;
+            while (!isAtEnd() && peek() != '\n')
+                advance();
         else
             addToken(TokenType::SLASH);
         break;
@@ -85,24 +85,26 @@ void Scanner::scanToken()
         break;
     case '"':
     {
-        std::string lexeme = std::string(1, c);
-        while (current < source.size() && source[current] != '"')
+        while (!isAtEnd() && peek() != '"')
         {
-            lexeme.append(std::string(1, source[current]));
-            current++;
+            if (peek() == '\n')
+                line++;
+            advance();
         }
-        if (current == source.size())
+
+        if (isAtEnd())
         {
             std::cerr << "[line " << line << "] Error: Unterminated string." << std::endl;
             hasLexicalErrors = true;
+            break;
         }
-        else
-        {
-            lexeme.append(std::string(1, source[current]));
-            current++;
-            std::string literal = lexeme.substr(1, lexeme.size() - 2);
-            addToken(TokenType::STRING, lexeme, literal);
-        }
+
+        advance();
+
+        std::string lexeme = source.substr(start, current - start);
+        std::string literal = source.substr(start + 1, current - start - 2);
+        addToken(TokenType::STRING, lexeme, literal);
+
         break;
     }
 
@@ -111,6 +113,18 @@ void Scanner::scanToken()
         hasLexicalErrors = true;
         break;
     }
+}
+
+char Scanner::advance()
+{
+    return source.at(current++);
+}
+
+char Scanner::peek() const
+{
+    if (isAtEnd())
+        return '\0';
+    return source.at(current);
 }
 
 bool Scanner::isAtEnd() const

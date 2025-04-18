@@ -17,9 +17,12 @@ private:
     std::vector<Token> tokens;
     bool hasLexicalErrors = false;
 
+    char advance();
+    char peek() const;
+    bool isAtEnd() const;
+
     void scanToken();
     void addToken(TokenType token);
     void addToken(TokenType token, std::string lexeme, std::string literal);
     bool matchCharacter(char c);
-    bool isAtEnd() const;
 };
