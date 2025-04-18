@@ -93,6 +93,32 @@ void Scanner::scanToken()
             tokens.push_back({TokenType::BANG, "!", line});
         }
         break;
+    case '<':
+        if (current + 1 < source.size() && source[current + 1] == '=')
+        {
+            std::cout << "LESS_EQUAL <= null" << std::endl;
+            tokens.push_back({TokenType::LESS_EQUAL, "<=", line});
+            current++;
+        }
+        else
+        {
+            std::cout << "LESS < null" << std::endl;
+            tokens.push_back({TokenType::LESS, "<", line});
+        }
+        break;
+    case '>':
+        if (current + 1 < source.size() && source[current + 1] == '=')
+        {
+            std::cout << "GREATER_EQUAL >= null" << std::endl;
+            tokens.push_back({TokenType::GREATER_EQUAL, ">=", line});
+            current++;
+        }
+        else
+        {
+            std::cout << "GREATER > null" << std::endl;
+            tokens.push_back({TokenType::GREATER, ">", line});
+        }
+        break;
 
     default:
         std::cerr << "[line " << line << "] Error: Unexpected character: " << c << std::endl;

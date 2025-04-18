@@ -4,7 +4,7 @@
 
 enum class TokenType
 {
-    // Add your token types here
+    // Single-character tokens
     LEFT_PAREN,
     RIGHT_PAREN,
     LEFT_BRACE,
@@ -15,10 +15,17 @@ enum class TokenType
     PLUS,
     MINUS,
     STAR,
+
+    // One or two character tokens
     EQUAL,
     EQUAL_EQUAL,
     BANG,
     BANG_EQUAL,
+    LESS,
+    LESS_EQUAL,
+    GREATER,
+    GREATER_EQUAL,
+
     EOF_TOKEN
 };
 
