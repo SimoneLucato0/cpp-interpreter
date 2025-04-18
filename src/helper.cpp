@@ -26,6 +26,9 @@ std::string TokenTypeToString(TokenType t) throw()
         return "MINUS";
     case TokenType::STAR:
         return "STAR";
+    case TokenType::SLASH:
+        return "SLASH";
+
     case TokenType::EQUAL:
         return "EQUAL";
     case TokenType::EQUAL_EQUAL:
@@ -74,6 +77,9 @@ std::string TokenTypeToLexeme(TokenType t) throw()
         return "-";
     case TokenType::STAR:
         return "*";
+    case TokenType::SLASH:
+        return "/";
+
     case TokenType::EQUAL:
         return "=";
     case TokenType::EQUAL_EQUAL:

@@ -15,6 +15,7 @@ enum class TokenType
     PLUS,
     MINUS,
     STAR,
+    SLASH,
 
     // One or two character tokens
     EQUAL,

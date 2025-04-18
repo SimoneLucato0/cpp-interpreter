@@ -57,6 +57,13 @@ void Scanner::scanToken()
     case '*':
         addToken(TokenType::STAR);
         break;
+    case '/':
+        if (matchCharacter('/'))
+            while (!isAtEnd() && source[current] != '\n')
+                current++;
+        else
+            addToken(TokenType::SLASH);
+        break;
     case '=':
         addToken(matchCharacter('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL);
         break;
