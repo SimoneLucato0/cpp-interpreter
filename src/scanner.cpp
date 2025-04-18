@@ -26,6 +26,12 @@ void Scanner::scanToken()
     switch (c)
     {
     case ' ':
+    case '\t':
+    case '\r':
+        break;
+    case '\n':
+        if (c == '\n')
+            line++;
         break;
     case '(':
         addToken(TokenType::LEFT_PAREN);
