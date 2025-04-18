@@ -32,6 +32,6 @@ int main(int argc, char *argv[])
     auto tokens = scanner.scanTokens();
 
     // For now, just print token count (replace with your own printing logic)
-    std::cout << "Token count: " << tokens.size() << "\n";
+    // std::cout << "Token count: " << tokens.size() << "\n";
     return 0;
 }

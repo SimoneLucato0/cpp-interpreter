@@ -1,4 +1,5 @@
 #include "scanner.h"
+#include <iostream>
 
 Scanner::Scanner(const std::string &src) : source(src) {}
 
@@ -20,10 +21,14 @@ void Scanner::scanToken()
     switch (c)
     {
     case '+':
-        tokens.push_back({TokenType::PLUS, "+", line});
+        std::cout << "PLUS +" << std::endl;
+        // tokens.push_back({TokenType::PLUS, "+", line});
         break;
     case '-':
-        tokens.push_back({TokenType::MINUS, "-", line});
+        std::cout << "MINUS -" << std::endl;
+        // tokens.push_back({TokenType::MINUS, "-", line});
+        break;
+    case ' ':
         break;
     // ... handle more tokens
     default:
@@ -33,7 +38,12 @@ void Scanner::scanToken()
             size_t numStart = current - 1;
             while (current < source.size() && isdigit(source[current]))
                 ++current;
-            tokens.push_back({TokenType::NUMBER, source.substr(numStart, current - numStart), line});
+            std::cout << "NUMBER " << source.substr(numStart, current - numStart) << std::endl;
+            // tokens.push_back({TokenType::NUMBER, source.substr(numStart, current - numStart), line});
+        }
+        else
+        {
+            std::cerr << "Unrecognized token: " << c << std::endl;
         }
         // ... handle identifiers, etc.
         break;
