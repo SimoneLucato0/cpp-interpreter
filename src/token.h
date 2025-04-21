@@ -2,8 +2,7 @@
 
 #include <string>
 
-enum class TokenType
-{
+enum class TokenType {
     // Single-character tokens
     LEFT_PAREN,
     RIGHT_PAREN,
@@ -32,11 +31,28 @@ enum class TokenType
     NUMBER,
     IDENTIFIER,
 
+    // Reserved words
+    AND,
+    CLASS,
+    ELSE,
+    FALSE,
+    FOR,
+    FUN,
+    IF,
+    NIL,
+    OR,
+    PRINT,
+    RETURN,
+    SUPER,
+    THIS,
+    TRUE,
+    VAR,
+    WHILE,
+
     EOF_TOKEN
 };
 
-struct Token
-{
+struct Token {
     TokenType type;
     std::string lexeme;
     std::string literal;

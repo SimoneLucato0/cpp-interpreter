@@ -1,5 +1,9 @@
 {
   "files.associations": {
-    "algorithm": "cpp"
+    "algorithm": "cpp",
+    "xstring": "cpp"
+  },
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
   }
 }
