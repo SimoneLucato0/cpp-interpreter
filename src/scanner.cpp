@@ -4,7 +4,7 @@
 
 #include "helper.h"
 
-Scanner::Scanner(const std::string &src) : source(src) {}
+Scanner::Scanner(const std::string& src) : source(src) {}
 
 std::vector<Token> Scanner::scanTokens() {
     while (!isAtEnd()) {
@@ -83,8 +83,7 @@ void Scanner::scanToken() {
             }
 
             if (isAtEnd()) {
-                std::cerr << "[line " << line << "] Error: Unterminated string." << std::endl;
-                hasLexicalErrors = true;
+                reportError("Unterminated string.");
                 break;
             }
 
@@ -133,8 +132,9 @@ void Scanner::scanToken() {
                 break;
             }
 
-            std::cerr << "[line " << line << "] Error: Unexpected character: " << c << std::endl;
-            hasLexicalErrors = true;
+            std::string message = "Unexpected character: " + std::string(1, c);
+            reportError(message);
+
             break;
     }
 }
@@ -166,4 +166,9 @@ bool Scanner::matchCharacter(char expected) {
 
     current++;
     return true;
+}
+
+void Scanner::reportError(const std::string& message) {
+    std::cerr << "[line " << line << "] Error: " << message << std::endl;
+    hasLexicalErrors = true;
 }

@@ -34,4 +34,5 @@ class Scanner {
     void addToken(TokenType token);
     void addToken(TokenType token, std::string lexeme, std::string literal);
     bool matchCharacter(char c);
+    void reportError(const std::string &message);
 };
