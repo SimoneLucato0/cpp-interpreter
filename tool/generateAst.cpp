@@ -25,7 +25,7 @@ int main(int argc, char const* argv[]) {
         return 1;
     }
 
-    std::filesystem::path outputFile = std::filesystem::current_path() / argv[1] / "expr.cpp";
+    std::filesystem::path outputFile = std::filesystem::current_path() / argv[1] / "expr.h";
 
     std::ofstream file(outputFile);
     if (!file) {
@@ -34,15 +34,17 @@ int main(int argc, char const* argv[]) {
     }
 
     defineAst(file, "Expr",
-              std::vector<std::string>{"Binary:Expr left, TokenType operation, Expr right",
+              std::vector<std::string>{"Binary:Expr left, Token operation, Expr right",
                                        "Grouping:Expr expression", "Literal:std::string value",
-                                       "Unary:TokenType operation, Expr right"});
+                                       "Unary:Token operation, Expr right"});
 
     return 0;
 }
 
 void defineAst(std::ofstream& file, std::string baseName, std::vector<std::string> types) {
     // Headers
+    file << "#pragma once" << std::endl;
+    file << std::endl;
     file << "#include <string>" << std::endl;
     file << "#include <memory>" << std::endl;
     file << std::endl;
@@ -56,23 +58,39 @@ void defineAst(std::ofstream& file, std::string baseName, std::vector<std::strin
     }
     file << std::endl;
 
-    // ExprVisitor definition
-    file << "class " << baseName << "Visitor {" << std::endl;
+    // ExprVisitorBase definition
+    file << "class " << baseName << "VisitorBase {" << std::endl;
     file << "public:" << std::endl;
     for (const std::string& type : types) {
         std::string className = type.substr(0, type.find(':'));
         file << "    virtual void visit" << className << "(const " << className << "& "
              << toLowercase(className) << ") = 0;" << std::endl;
     }
-    file << "    virtual ~" << baseName << "Visitor() = default;" << std::endl;
+    file << "    virtual ~" << baseName << "VisitorBase() = default;" << std::endl;
+    file << "};" << std::endl;
+    file << std::endl;
+    file << std::endl;
+
+    // template ExprVisitor definition
+    file << "template <typename R>" << std::endl;
+    file << "class " << baseName << "Visitor : public " << baseName << "VisitorBase {" << std::endl;
+    file << "public:" << std::endl;
+    file << "    R result;" << std::endl;
     file << "};" << std::endl;
     file << std::endl;
 
     // Base class definition
     file << "class " << baseName << " {" << std::endl;
     file << "public:" << std::endl;
-    file << "    virtual void accept(" << baseName << "Visitor& visitor) const = 0;" << std::endl;
+    file << "    virtual void acceptHelper(" << baseName << "VisitorBase& visitor) const = 0;"
+         << std::endl;
     file << "    virtual ~" << baseName << "() = default;" << std::endl;
+    file << std::endl;
+    file << "    template <typename R>" << std::endl;
+    file << "    R accept(" << baseName << "Visitor<R>& visitor) const {" << std::endl;
+    file << "        acceptHelper(visitor);" << std::endl;
+    file << "        return visitor.result;" << std::endl;
+    file << "    }" << std::endl;
     file << "};" << std::endl;
     file << std::endl;
 
@@ -152,7 +170,8 @@ void defineType(std::ofstream& file, std::string baseName, std::string className
     file << "{}" << std::endl;
 
     // accept override
-    file << "    void accept(" << baseName << "Visitor& visitor) const override {" << std::endl;
+    file << "    void acceptHelper(" << baseName << "VisitorBase& visitor) const override {"
+         << std::endl;
     file << "        visitor.visit" << className << "(*this);" << std::endl;
     file << "    }" << std::endl;
 
