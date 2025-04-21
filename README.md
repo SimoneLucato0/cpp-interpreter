@@ -1,13 +1,13 @@
-# Simple Interpreter Scanner
+# C++ Interpreter
 
 ## Build
 
     make
 
+## Test
+
+    ./run_tests.sh
+
 ## Run
 
-    ./tokenize tokenize tests/test1.txt
-
-## Test Files
-
-Place test source files in the `tests/` directory.
+    ./tokenize tokenize <file>
