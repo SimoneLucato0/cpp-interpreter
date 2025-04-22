@@ -12,5 +12,10 @@ tokenize: $(SRC)
 generateAst: tool/generateAst.cpp
 	$(CXX) $(CXXFLAGS) $(INC) -o generateAst tool/generateAst.cpp
 
+printAst: tool/main.cpp
+	$(CXX) $(CXXFLAGS) $(INC) -o print tool/main.cpp
+
+
+
 clean:
 	rm -f tokenize

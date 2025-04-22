@@ -52,9 +52,13 @@ enum class TokenType {
     EOF_TOKEN
 };
 
-struct Token {
+class Token {
+   public:
     TokenType type;
     std::string lexeme;
     std::string literal;
     int line;
+
+    Token(TokenType type, std::string lexeme, std::string literal, int line)
+        : type(type), lexeme(lexeme), literal(literal), line(line) {}
 };
