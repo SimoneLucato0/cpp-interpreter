@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "token.h"
+#include "token.hpp"
 
 std::string TokenTypeToString(TokenType t);
 std::string TokenTypeToLexeme(TokenType t);

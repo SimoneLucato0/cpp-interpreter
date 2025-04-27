@@ -25,7 +25,7 @@ int main(int argc, char const* argv[]) {
         return 1;
     }
 
-    std::filesystem::path outputFile = std::filesystem::current_path() / argv[1] / "expr.h";
+    std::filesystem::path outputFile = std::filesystem::current_path() / argv[1] / "expr.hpp";
 
     std::ofstream file(outputFile);
     if (!file) {
@@ -48,7 +48,7 @@ void defineAst(std::ofstream& file, std::string baseName, std::vector<std::strin
     file << "#include <string>" << std::endl;
     file << "#include <memory>" << std::endl;
     file << std::endl;
-    file << "#include \"../src/token.h\"" << std::endl;
+    file << "#include \"../src/token.hpp\"" << std::endl;
     file << std::endl;
 
     // Forward declarations

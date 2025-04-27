@@ -1,8 +1,8 @@
-#include "scanner.h"
+#include "scanner.hpp"
 
 #include <iostream>
 
-#include "helper.h"
+#include "../helper.hpp"
 
 Scanner::Scanner(const std::string& src) : source(src) {}
 

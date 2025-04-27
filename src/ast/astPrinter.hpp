@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include "expr.h"
+#include "expr.hpp"
 
 class AstPrinter : public ExprVisitor<std::string> {
    private:
