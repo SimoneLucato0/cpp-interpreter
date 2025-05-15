@@ -2,9 +2,11 @@
 #include <iostream>
 #include <string>
 
-#include "scanner.h"
+#include "ast/astPrinter.hpp"
+#include "parser/parser.hpp"
+#include "scanner/scanner.hpp"
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char const* argv[]) {
     if (argc != 3) {
         std::cerr << "Usage: " << argv[0] << " tokenize <file>\n";
         return 1;
@@ -29,7 +31,14 @@ int main(int argc, char const *argv[]) {
     }
 
     Scanner scanner(source);
-    auto tokens = scanner.scanTokens();
+    std::vector<Token> tokens = scanner.scanTokens();
+
+    Parser* parser = new Parser(tokens);
+    std::unique_ptr<Expr> expression = parser->parse();
+
+    if (parser->hadError) return 1;
+
+    std::cout << (new AstPrinter())->print(*expression) << std::endl;
 
     return 0;
 }

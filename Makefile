@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra
 
-SRC = src/main.cpp src/helper.cpp src/scanner.cpp
+SRC = src/main.cpp src/helper.cpp src/scanner/scanner.cpp src/parser/parser.cpp
 INC = -Isrc
 
 all: tokenize
