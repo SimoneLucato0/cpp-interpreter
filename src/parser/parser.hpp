@@ -4,7 +4,8 @@
 #include <vector>
 
 #include "../ast/expr.hpp"
-#include "../token.hpp"
+#include "../token/tokenType.hpp"
+#include "../token/token.hpp"
 
 class Parser {
    private:

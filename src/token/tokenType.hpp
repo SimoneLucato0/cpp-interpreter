@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 enum class TokenType {
     // Single-character tokens
     LEFT_PAREN,
@@ -52,13 +50,5 @@ enum class TokenType {
     EOF_TOKEN
 };
 
-class Token {
-   public:
-    TokenType type;
-    std::string lexeme;
-    std::string literal;
-    int line;
-
-    Token(TokenType type, std::string lexeme, std::string literal, int line)
-        : type(type), lexeme(lexeme), literal(literal), line(line) {}
-};
+std::string TokenTypeToString(TokenType t);
+std::string TokenTypeToLexeme(TokenType t);

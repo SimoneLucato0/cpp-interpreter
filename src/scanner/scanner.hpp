@@ -3,7 +3,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../token.hpp"
+#include "../token/tokenType.hpp"
+#include "../token/token.hpp"
 
 class Scanner {
    public:

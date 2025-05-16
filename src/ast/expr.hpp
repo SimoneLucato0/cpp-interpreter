@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "../token.hpp"
+#include "../token/token.hpp"
 
 class Binary;
 class Grouping;

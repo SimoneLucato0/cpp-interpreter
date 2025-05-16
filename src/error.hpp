@@ -3,7 +3,8 @@
 #include <iostream>
 #include <string>
 
-#include "token.hpp"
+#include "token/tokenType.hpp"
+#include "token/token.hpp"
 
 class Error {
    private:
