@@ -36,7 +36,7 @@ std::unique_ptr<Expr> Parser::comparison() {
 std::unique_ptr<Expr> Parser::term() {
     std::unique_ptr<Expr> expr = factor();
 
-    while (match({TokenType::LESS, TokenType::PLUS})) {
+    while (match({TokenType::MINUS, TokenType::PLUS})) {
         Token op = previous();
         std::unique_ptr<Expr> right = term();
         expr = std::make_unique<Binary>(std::move(expr), op, std::move(right));
