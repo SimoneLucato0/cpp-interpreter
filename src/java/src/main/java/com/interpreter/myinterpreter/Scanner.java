@@ -1,12 +1,34 @@
 package com.interpreter.myinterpreter;
 
+import static java.util.Map.entry;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Scanner {
 	private final String source;
 	private int start = 0, current = 0, line = 1;
 	private ArrayList<Token> tokens = new ArrayList<>();
-       	private boolean hasSyntaxErrors = false;	
+    private boolean hasSyntaxErrors = false;	
+
+	private Map<String, TokenType> reservedKeywordsMap = Map.ofEntries(
+        entry("and", TokenType.AND),     
+		entry("class", TokenType.CLASS),   
+		entry("else", TokenType.ELSE),
+        entry("false", TokenType.FALSE), 
+		entry("for", TokenType.FOR),       
+		entry("fun", TokenType.FUN),
+        entry("if", TokenType.IF),       
+		entry("nil", TokenType.NIL),       
+		entry("or", TokenType.OR),
+        entry("print", TokenType.PRINT), 
+		entry("return", TokenType.RETURN), 
+		entry("super", TokenType.SUPER),
+        entry("this", TokenType.THIS),   
+		entry("true", TokenType.TRUE),     
+		entry("var", TokenType.VAR),
+        entry("while", TokenType.WHILE)
+    );
 
 	Scanner(String source) {
 		this.source = source;
@@ -47,23 +69,23 @@ public class Scanner {
 				addToken(TokenType.RIGHT_BRACE);
 				break;
 			case ',':
-            			addToken(TokenType.COMMA);
-            			break;
-       			case '.':
-            			addToken(TokenType.DOT);
-            			break;
-        		case ';':
-            			addToken(TokenType.SEMICOLON);
-            			break;
-        		case '+':
-           			addToken(TokenType.PLUS);
-            			break;
-        		case '-':
-            			addToken(TokenType.MINUS);
-            			break;
-        		case '*':
-            			addToken(TokenType.STAR);
-            			break;
+				addToken(TokenType.COMMA);
+				break;
+			case '.':
+				addToken(TokenType.DOT);
+				break;
+			case ';':
+				addToken(TokenType.SEMICOLON);
+				break;
+			case '+':
+				addToken(TokenType.PLUS);
+				break;
+			case '-':
+				addToken(TokenType.MINUS);
+				break;
+			case '*':
+				addToken(TokenType.STAR);
+				break;
 			case '>':
 				addToken(matchCharacter('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
 				break;
@@ -105,24 +127,21 @@ public class Scanner {
 			}	
 			default: { 
 				if (isDigit(c)) {
-					while (!isAtEnd() && isDigit(peek())) advance();
-	
-					if (peek() == '.' && isDigit(peekNext())) {
-						advance();
-		
-						while (isDigit(peek())) advance();
-					}
-
-					String lexeme = source.substring(start, current);
-					String literal = lexeme;	
-
-					if (!literal.contains(".")) literal += ".0";
-					while (literal.endsWith("0") && literal.charAt(literal.length() - 2) == '0') {
-						literal = literal.substring(0, literal.length() - 1);
-					}
-
-					addToken(TokenType.NUMBER, lexeme, literal);
+					handleNumber();
  					break;
+				}
+
+				if (isCharacter(c)){
+					while(!isAtEnd() && (isCharacter(peek()) || isDigit(peek()))) advance();
+
+					String value = source.substring(start, current);
+					if (reservedKeywordsMap.containsKey(value)){
+						addToken(reservedKeywordsMap.get(value), value.toLowerCase(), "null");
+					} else {
+						addToken(TokenType.IDENTIFIER, value, "null");
+					}
+
+					break;
 				}
 
 				String errorMessage = "Unexpected character: " + c;
@@ -151,8 +170,28 @@ public class Scanner {
 		return Character.isDigit(c);
 	}
 
+	private boolean isCharacter(char c) {
+		return Character.isLetter(c) || c == '_';
+	}
+
 	private void handleNumber() {
- 	
+		while (!isAtEnd() && isDigit(peek())) advance();
+	
+		if (peek() == '.' && isDigit(peekNext())) {
+			advance();
+
+			while (isDigit(peek())) advance();
+		}
+
+		String lexeme = source.substring(start, current);
+		String literal = lexeme;	
+
+		if (!literal.contains(".")) literal += ".0";
+		while (literal.endsWith("0") && literal.charAt(literal.length() - 2) == '0') {
+			literal = literal.substring(0, literal.length() - 1);
+		}
+
+		addToken(TokenType.NUMBER, lexeme, literal);
 	}
 
 	private char peek() {
