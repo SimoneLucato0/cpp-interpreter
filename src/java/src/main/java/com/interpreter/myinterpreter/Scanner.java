@@ -8,7 +8,7 @@ import java.util.Map;
 public class Scanner {
 	private final String source;
 	private int start = 0, current = 0, line = 1;
-	private ArrayList<Token> tokens = new ArrayList<>();
+	private final ArrayList<Token> tokens = new ArrayList<>();
     private boolean hasSyntaxErrors = false;	
 
 	private Map<String, TokenType> reservedKeywordsMap = Map.ofEntries(

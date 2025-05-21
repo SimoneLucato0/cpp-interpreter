@@ -1,10 +1,10 @@
 package com.interpreter.myinterpreter;
 
 public class Token {
-	public TokenType type;
-	public String lexeme;
-	public String literal;
-	public int line;
+	public final TokenType type;
+	public final String lexeme;
+	public final String literal;
+	public final int line;
 
 	public Token(TokenType type, String lexeme, String literal, int line) {
 		this.type = type;
