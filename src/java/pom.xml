@@ -16,7 +16,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.interpreter.myinterpreter.Main</mainClass>
+                            <mainClass>com.interpreter.myinterpreter.Lox</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

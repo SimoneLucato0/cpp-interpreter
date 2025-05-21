@@ -205,7 +205,7 @@ public class Scanner {
 	}
 
 	private void addToken(TokenType type) {
-		addToken(type, type.toString(), "null");
+		addToken(type, tokenTypeToLexeme(type), "null");
 	}
 
 	private void addToken(TokenType type, String lexeme, String literal) {
@@ -214,7 +214,58 @@ public class Scanner {
 	}
 
 	private void reportError(String message) {
-		System.err.printf("Error [line %d]: %s\n", line, message);
+		Lox.error(line, message);
 		hasSyntaxErrors = true;
+	}
+
+	private static String tokenTypeToLexeme(TokenType type){
+		switch (type) {
+			case LEFT_PAREN:
+				return "(";
+			case RIGHT_PAREN:
+				return ")";
+			case LEFT_BRACE:
+				return "{";
+			case RIGHT_BRACE:
+				return "}";
+			case COMMA:
+				return ",";
+			case DOT:
+				return ".";
+			case SEMICOLON:
+				return ";";
+			case PLUS:
+				return "+";
+			case MINUS:
+				return "-";
+			case STAR:
+				return "*";
+			case SLASH:
+				return "/";
+	
+			case EQUAL:
+				return "=";
+			case EQUAL_EQUAL:
+				return "==";
+			case BANG:
+				return "!";
+			case BANG_EQUAL:
+				return "!=";
+			case LESS:
+				return "<";
+			case LESS_EQUAL:
+				return "<=";
+			case GREATER:
+				return ">";
+			case GREATER_EQUAL:
+				return ">=";
+	
+			case EOF_TOKEN:
+				return "";
+	
+			default:
+				throw new RuntimeException("TokenTypeToLexeme: Unimplemented item");
+		}
+	
 	}
 }
