@@ -6,17 +6,20 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class Lox {
-	private static boolean hadError = false;
+	private static Intepreter intepreter = new Intepreter();
 
-    public static void main(String[] args) {
-    	if (args.length < 1){
+	static boolean hadError = false;
+	static boolean hadRuntimeError = false;
+
+	public static void main(String[] args) {
+		if (args.length < 1) {
 			System.err.println("Usage: java Main <file-path>");
 			return;
 		}
 
 		String filePath = args[0];
 		String source = "";
-			
+
 		try {
 			source = Files.readString(Paths.get(filePath));
 		} catch (IOException e) {
@@ -35,26 +38,33 @@ public class Lox {
 		Parser parser = new Parser(tokens);
 		Expr expr = parser.parse();
 
-		if (hadError) return;
+		if (hadError)
+			System.exit(65);
+		if (hadRuntimeError)
+			System.exit(70);
 
-		System.out.println(new AstPrinter().print(expr));
+		intepreter.interpret(expr);
+	}
 
-    }
+	static void error(Token token, String message) {
+		if (token.type == TokenType.EOF_TOKEN) {
+			report(token.line, " at end", message);
+		} else {
+			report(token.line, " at '" + token.lexeme + "'", message);
+		}
+	}
 
-	static void error(Token token, String message){
-        if (token.type == TokenType.EOF_TOKEN){
-            report(token.line, " at end", message);
-        } else {
-            report(token.line, " at '" + token.lexeme + "'", message);
-        }
-    }
-
-	static void error(int line, String message){
+	static void error(int line, String message) {
 		report(line, message);
 	}
 
-    private static void report(int line, String... messages) {
+	static void runtimeError(RuntimeError error) {
+		System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
+		hadRuntimeError = true;
+	}
+
+	private static void report(int line, String... messages) {
 		hadError = true;
-        System.err.println(String.format("[line %d] %s", line, String.join(" ", messages)));
-    }
+		System.err.println(String.format("[line %d] %s", line, String.join(" ", messages)));
+	}
 }
