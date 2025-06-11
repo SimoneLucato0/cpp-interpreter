@@ -15,7 +15,9 @@ generateAst: tool/generateAst.cpp
 printAst: tool/main.cpp
 	$(CXX) $(CXXFLAGS) $(INC) -o print tool/main.cpp
 
-
+recreateAsts:
+	javac ./tool/GenerateAst.java
+	java -cp ./tool GenerateAst ./src/java/src/main/java/com/interpreter/myinterpreter
 
 clean:
 	rm -f tokenize
