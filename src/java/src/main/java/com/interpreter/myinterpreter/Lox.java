@@ -36,14 +36,14 @@ public class Lox {
 		List<Token> tokens = scanner.scanTokens();
 
 		Parser parser = new Parser(tokens);
-		Expr expr = parser.parse();
+		List<Stmt> statements = parser.parse();
 
 		if (hadError)
 			System.exit(65);
 		if (hadRuntimeError)
 			System.exit(70);
 
-		intepreter.interpret(expr);
+		intepreter.interpret(statements);
 	}
 
 	static void error(Token token, String message) {
