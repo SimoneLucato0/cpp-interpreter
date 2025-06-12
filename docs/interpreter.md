@@ -1,4 +1,6 @@
-# Evaluating expressions
+# Interpreter
+
+## Evaluating expressions
 
 While the end user of a language sees only the types defined in the language (in this case Lox), it is the implementation of the interpreter (for an interpreted language) what truly matters. Therefore, as of now, there must be a mapping between Lox types and Java types. Considering that Lox is dynamically typed, we need to use `java.lang.Object` as a form of representing any object and then dialing it down using the `instanceof` operator.
 
@@ -22,3 +24,19 @@ There are runtime checks being performed in order to ensure that the performed o
 - For the other arithmetic and comparison operators, we must ensure that both operands are numbers.
 
 If such errors occurs a `RuntimeError` is thrown.
+
+## Variables
+
+Variable declarations are statements, but they are different from other statements, because they are not allowed everywhere. Consider the following example:
+
+```
+if (monday) print "Ugh, already?";
+```
+
+that's fine, but instead this is not:
+
+```
+if(monday) var beverage = "espresso";
+```
+
+Because what is the scope of the defined variable? This can only exist within a _block_. To go with this concept, variables are stored in a so-called _environment_ (basically a hash-map). In order to allow variable shadowing, the lookup inside the environment is recursive, looking for the variable in the parent environment as well if it's not found in the current one.

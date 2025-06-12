@@ -1,17 +1,35 @@
 # Parser
 
-The grammatic used by Lox is the following: (source is [Chapter 6 of Crafting Interpreters](https://craftinginterpreters.com/parsing-expressions.html))
+The grammatic used by Lox is the following: (sources are [Chapter 6](https://craftinginterpreters.com/parsing-expressions.html) and [Chapter 8](https://craftinginterpreters.com/statements-and-state.html) of Coding Interpreters).
 
 ```
-expression     → equality ;
+program        → declaration* EOF ;
+
+declaration    → varDecl
+               | statement ;
+
+varDecl        → "var" IDENTIFIER ( "=" expression )? ";" ;
+statement      → exprStmt
+               | printStmt
+               | block ;
+
+exprStmt       → expression ";" ;
+printStmt      → "print" expression ";" ;
+block          → "{" declaration* "}" ;
+
+expression     → assignment ;
+assignment     → IDENTIFIER "=" assignment
+               | equality ;
 equality       → comparison ( ( "!=" | "==" ) comparison )* ;
 comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 term           → factor ( ( "-" | "+" ) factor )* ;
 factor         → unary ( ( "/" | "*" ) unary )* ;
 unary          → ( "!" | "-" ) unary
                | primary ;
-primary        → NUMBER | STRING | "true" | "false" | "nil"
-               | "(" expression ")" ;
+primary        → "true" | "false" | "nil"
+               | NUMBER | STRING
+               | "(" expression ")"
+               | IDENTIFIER ;
 ```
 
 The parsing algorithm that will be used is the **recursive descent**: basically it's a top-down parser (starting from "expression" downwards) that more or less translates each grammar rule into some code.
