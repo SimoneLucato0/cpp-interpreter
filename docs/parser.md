@@ -9,7 +9,9 @@ declaration    → varDecl
                | statement ;
 
 varDecl        → "var" IDENTIFIER ( "=" expression )? ";" ;
+
 statement      → exprStmt
+               | forStmt
                | ifStmt
                | printStmt
                | whileStmt
@@ -17,6 +19,9 @@ statement      → exprStmt
 
 
 exprStmt       → expression ";" ;
+forStmt        → "for" "(" ( varDecl | exprStmt | ";" )
+                 expression? ";"
+                 expression? ")" statement ;
 ifStmt         → "if" "(" expression ")" statement
                ( "else" statement )? ;
 printStmt      → "print" expression ";" ;

@@ -19,5 +19,11 @@ recreateAsts:
 	javac ./tool/GenerateAst.java
 	java -cp ./tool GenerateAst ./src/java/src/main/java/com/interpreter/myinterpreter
 
+build:
+	cd src/java && mvn clean package && cd .. && cd ..
+
+test:
+	java -jar ./src/java/target/myinterpreter-1.0-SNAPSHOT.jar tests/t1.txt
+
 clean:
 	rm -f tokenize
