@@ -2,3 +2,4 @@ generateAst
 print
 tokenize
 src/java/target
+tool/GenerateAst.class
