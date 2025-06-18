@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class Lox {
-	private static Intepreter intepreter = new Intepreter();
+	private static Interpreter intepreter = new Interpreter();
 
 	static boolean hadError = false;
 	static boolean hadRuntimeError = false;
